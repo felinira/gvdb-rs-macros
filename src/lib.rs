@@ -1,3 +1,23 @@
+//! This crate offers convenience macros for [gvdb](https://!github.com/felinira/gvdb-rs).
+//! Currently the macros are [`include_gresource_from_xml!()`] and
+//! [`include_gresource_from_dir!()`]
+//!
+//! ## Example
+//!
+//! This example compiles a GResource XML file and includes the bytes in the file.
+//!
+//! ```
+//! use gvdb_macros::include_gresource_from_xml;
+//! const GRESOURCE_BYTES: &[u8] = include_gresource_from_xml!("test/test3.gresource.xml");
+//! ```
+//!
+//! Scan a directory and create a GResource file with all the contents of the directory.
+//!
+//! ```
+//! use gvdb_macros::include_gresource_from_dir;
+//! const GRESOURCE_BYTES: &[u8] = include_gresource_from_dir!("/gvdb/rs/test", "test/");
+//! ```
+
 extern crate proc_macro;
 
 use std::path::PathBuf;
@@ -36,8 +56,7 @@ fn include_gresource_from_xml_inner(input: proc_macro2::TokenStream) -> proc_mac
     }
 }
 
-/// This macro compiles a GResource XML file to its binary representation and includes it in the
-/// source file.
+/// Compile a GResource XML file to its binary representation and include it in the source file.
 ///
 /// ```
 /// use gvdb_macros::include_gresource_from_xml;
