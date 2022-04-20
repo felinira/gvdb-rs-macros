@@ -2,6 +2,9 @@
 name = "gvdb-macros"
 version = "0.1.0"
 edition = "2021"
+description = "Convenience macros for gvdb"
+repository = "https://github.com/felinira/gvdb-rs-macros"
+license = "LGPL-3.0-or-later"
 
 [lib]
 proc-macro = true
