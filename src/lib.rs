@@ -6,8 +6,8 @@ use quote::quote;
 
 fn include_gresource_from_xml_with_filename(filename: &str) -> proc_macro2::TokenStream {
     let path = PathBuf::from(filename);
-    let xml = gvdb::gresource::xml::GResourceXMLDoc::from_file(&path).unwrap();
-    let builder = gvdb::gresource::builder::GResourceBuilder::from_xml(xml).unwrap();
+    let xml = gvdb::gresource::GResourceXMLDocument::from_file(&path).unwrap();
+    let builder = gvdb::gresource::GResourceBuilder::from_xml(xml).unwrap();
     let data = builder.build().unwrap();
 
     let bytes = proc_macro2::Literal::byte_string(&data);

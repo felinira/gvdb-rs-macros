@@ -10,7 +10,7 @@ license = "LGPL-3.0-or-later"
 proc-macro = true
 
 [dependencies]
-gvdb = { version = "0.1.0", git = "https://github.com/felinira/gvdb-rs.git" }
+gvdb = { version = "0.1.0", git = "https://github.com/felinira/gvdb-rs.git", default-features = false, features = ["gresource"] }
 proc-macro2 = "1.0.37"
 litrs = "0.2.3"
 quote = "1.0.18"
