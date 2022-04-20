@@ -35,6 +35,13 @@ fn include_gresource_from_xml_inner(input: proc_macro2::TokenStream) -> proc_mac
     }
 }
 
+/// This macro compiles a GResource XML file to its binary representation and includes it in the
+/// source file.
+///
+/// ```
+/// use gvdb_macros::include_gresource_from_xml;
+/// const GRESOURCE_BYTES: &[u8] = include_gresource_from_xml!("test/test3.gresource.xml");
+/// ```
 #[proc_macro]
 pub fn include_gresource_from_xml(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
     let input = proc_macro2::TokenStream::from(input);
