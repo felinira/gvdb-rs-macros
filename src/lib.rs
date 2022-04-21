@@ -18,6 +18,8 @@
 //! const GRESOURCE_BYTES: &[u8] = include_gresource_from_dir!("/gvdb/rs/test", "test/");
 //! ```
 
+#![warn(missing_docs)]
+
 extern crate proc_macro;
 
 use std::path::PathBuf;
