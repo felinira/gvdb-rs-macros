@@ -1,6 +1,6 @@
 # About this crate
 
-This crate offers convenience macros for [gvdb](https://github.com/felinira/gvdb-rs).
+This crate offers convenience macros for [gvdb](https://crates.io/crates/gvdb).
 Currently the only implemented macro is `include_gresource_from_xml!()`
 
 ## Example
