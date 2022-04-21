@@ -1,10 +1,10 @@
 //! This crate offers convenience macros for [gvdb](https://!github.com/felinira/gvdb-rs).
-//! Currently the macros are [`include_gresource_from_xml!()`] and
+//! The macros are [`include_gresource_from_xml!()`] and
 //! [`include_gresource_from_dir!()`]
 //!
-//! ## Example
+//! ## Examples
 //!
-//! This example compiles a GResource XML file and includes the bytes in the file.
+//! Compile a GResource XML file and include the bytes in the file.
 //!
 //! ```
 //! use gvdb_macros::include_gresource_from_xml;
