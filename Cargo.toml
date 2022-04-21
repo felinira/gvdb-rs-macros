@@ -7,6 +7,7 @@ repository = "https://github.com/felinira/gvdb-rs-macros"
 license = "LGPL-3.0-or-later"
 keywords = [ "gvdb", "glib", "gresource", "glib-compile-resources" ]
 categories = [ "gui", "data-structures", "encoding" ]
+exclude = [ ".idea" ]
 
 [lib]
 proc-macro = true
