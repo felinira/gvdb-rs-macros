@@ -48,7 +48,7 @@ fn include_gresource_from_xml_inner(input: proc_macro2::TokenStream) -> proc_mac
     }
 
     match Literal::try_from(first) {
-        Err(e) => return proc_macro2::TokenStream::from(e.to_compile_error()),
+        Err(e) => proc_macro2::TokenStream::from(e.to_compile_error()),
         Ok(Literal::String(str)) => {
             include_gresource_from_xml_with_filename(str.value())
         }
