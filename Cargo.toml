@@ -5,6 +5,8 @@ edition = "2021"
 description = "Convenience macros for gvdb"
 repository = "https://github.com/felinira/gvdb-rs-macros"
 license = "LGPL-3.0-or-later"
+keywords = [ "gvdb", "glib", "gresource", "glib-compile-resources" ]
+categories = [ "gui", "data-structures", "encoding" ]
 
 [lib]
 proc-macro = true
