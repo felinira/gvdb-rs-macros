@@ -8,14 +8,14 @@
 //!
 //! ```
 //! use gvdb_macros::include_gresource_from_xml;
-//! const GRESOURCE_BYTES: &[u8] = include_gresource_from_xml!("test/test3.gresource.xml");
+//! static GRESOURCE_BYTES: &[u8] = include_gresource_from_xml!("test/test3.gresource.xml");
 //! ```
 //!
 //! Scan a directory and create a GResource file with all the contents of the directory.
 //!
 //! ```
 //! use gvdb_macros::include_gresource_from_dir;
-//! const GRESOURCE_BYTES: &[u8] = include_gresource_from_dir!("/gvdb/rs/test", "test/");
+//! static GRESOURCE_BYTES: &[u8] = include_gresource_from_dir!("/gvdb/rs/test", "test/");
 //! ```
 
 #![warn(missing_docs)]
@@ -27,17 +27,28 @@ use litrs::{Literal, StringLit};
 use proc_macro2::TokenTree;
 use quote::quote;
 
+fn quote_bytes(bytes: &[u8]) -> proc_macro2::TokenStream {
+    let bytes_lit = proc_macro2::Literal::byte_string(&bytes);
+
+    quote! {
+        {{
+            #[repr(C, align(16))]
+            struct __Aligned<T: ?Sized>(T);
+
+            static __DATA: &'static __Aligned<[u8]> = &__Aligned(*#bytes_lit);
+
+            &__DATA.0
+        }}
+    }
+}
+
 fn include_gresource_from_xml_with_filename(filename: &str) -> proc_macro2::TokenStream {
     let path = PathBuf::from(filename);
     let xml = gvdb::gresource::GResourceXMLDocument::from_file(&path).unwrap();
     let builder = gvdb::gresource::GResourceBuilder::from_xml(xml).unwrap();
     let data = builder.build().unwrap();
 
-    let bytes = proc_macro2::Literal::byte_string(&data);
-
-    quote! {
-        #bytes
-    }
+    quote_bytes(&data)
 }
 
 fn include_gresource_from_xml_inner(input: proc_macro2::TokenStream) -> proc_macro2::TokenStream {
@@ -62,7 +73,7 @@ fn include_gresource_from_xml_inner(input: proc_macro2::TokenStream) -> proc_mac
 ///
 /// ```
 /// use gvdb_macros::include_gresource_from_xml;
-/// const GRESOURCE_BYTES: &[u8] = include_gresource_from_xml!("test/test3.gresource.xml");
+/// static GRESOURCE_BYTES: &[u8] = include_gresource_from_xml!("test/test3.gresource.xml");
 /// ```
 #[proc_macro]
 pub fn include_gresource_from_xml(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -76,11 +87,7 @@ fn include_gresource_from_dir_str(prefix: &str, directory: &str) -> proc_macro2:
     let builder = gvdb::gresource::GResourceBuilder::from_directory(prefix, &path, true, true).unwrap();
     let data = builder.build().unwrap();
 
-    let bytes = proc_macro2::Literal::byte_string(&data);
-
-    quote! {
-        #bytes
-    }
+    quote_bytes(&data)
 }
 
 fn include_gresource_from_dir_inner(input: proc_macro2::TokenStream) -> proc_macro2::TokenStream {
@@ -126,7 +133,7 @@ fn include_gresource_from_dir_inner(input: proc_macro2::TokenStream) -> proc_mac
 /// All files that end with `.ui` and `.css` are compressed.
 /// ```
 /// use gvdb_macros::include_gresource_from_dir;
-/// const GRESOURCE_BYTES: &[u8] = include_gresource_from_dir!("/gvdb/rs/test", "test/");
+/// static GRESOURCE_BYTES: &[u8] = include_gresource_from_dir!("/gvdb/rs/test", "test/");
 /// ```
 #[proc_macro]
 pub fn include_gresource_from_dir(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
@@ -143,8 +150,7 @@ mod tests {
     #[test]
     fn include_gresource_from_xml() {
         let tokens = include_gresource_from_xml_inner(quote! {"test/test3.gresource.xml"});
-        assert!(tokens.to_string().starts_with(r#"b"GVariant"#));
-        assert!(tokens.to_string().ends_with("\""));
+        assert!(tokens.to_string().contains(r#"b"GVariant"#));
     }
 
     #[test]
@@ -156,8 +162,7 @@ mod tests {
     #[test]
     fn include_gresource_from_dir() {
         let tokens = include_gresource_from_dir_inner(quote! {"/gvdb/rs/test", "test"});
-        assert!(tokens.to_string().starts_with(r#"b"GVariant"#));
-        assert!(tokens.to_string().ends_with("\""));
+        assert!(tokens.to_string().contains(r#"b"GVariant"#));
     }
 
     #[test]
