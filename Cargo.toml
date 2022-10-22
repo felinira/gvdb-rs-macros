@@ -1,6 +1,6 @@
 [package]
 name = "gvdb-macros"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 description = "Convenience macros for gvdb"
 repository = "https://github.com/felinira/gvdb-rs-macros"
@@ -13,7 +13,7 @@ exclude = [ ".github", ".idea" ]
 proc-macro = true
 
 [dependencies]
-gvdb = { version = "0.2", default-features = false, features = ["gresource"] }
+gvdb = { version = "0.3", default-features = false, features = ["gresource"] }
 proc-macro2 = "1.0.37"
 litrs = "0.2.3"
 quote = "1.0.18"
