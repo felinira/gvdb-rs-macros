@@ -29,7 +29,7 @@ use proc_macro2::TokenTree;
 use quote::quote;
 
 fn quote_bytes(bytes: &[u8]) -> proc_macro2::TokenStream {
-    let bytes_lit = proc_macro2::Literal::byte_string(&bytes);
+    let bytes_lit = proc_macro2::Literal::byte_string(bytes);
 
     quote! {
         {{
